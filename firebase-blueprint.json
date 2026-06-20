@@ -1,0 +1,49 @@
+{
+  "entities": {
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Represents a payment transaction initialized via Paystack and stored in Firestore.",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "The email of the buyer."
+        },
+        "amount": {
+          "type": "number",
+          "description": "The transaction amount in Kobo (Paystack standard) or Main currency."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "completed", "failed"],
+          "description": "The current state of the transaction."
+        },
+        "reference": {
+          "type": "string",
+          "description": "Paystack verification reference string."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when transaction started."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when transaction status updated."
+        },
+        "items": {
+          "type": "array",
+          "description": "Items purchased in this transaction."
+        }
+      },
+      "required": ["email", "amount", "status", "reference", "createdAt"]
+    }
+  },
+  "firestore": {
+    "transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "Collection of payment transactions."
+    }
+  }
+}

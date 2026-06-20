@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Safety Net (Catch-All default deny)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Transactions Rules
+    // Only created and updated server-side via Firebase Admin.
+    // We allow read operations if the visitor's authenticated email matches the transaction email.
+    match /transactions/{transactionId} {
+      allow create, update, delete: if false; // Server-only initialization and completion
+      allow get, list: if request.auth != null && request.auth.token.email_verified == true && resource.data.email == request.auth.token.email;
+    }
+  }
+}
