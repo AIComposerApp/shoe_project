@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 let isInitialized = false;
+let configDatabaseId: string | undefined;
 
 export function getFirebaseAdmin() {
   if (!isInitialized) {
@@ -13,6 +14,7 @@ export function getFirebaseAdmin() {
       if (fs.existsSync(configPath)) {
         const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
         configProjectId = config.projectId;
+        configDatabaseId = config.firestoreDatabaseId;
       }
     } catch (e) {
       console.warn('Could not read firebase-applet-config.json during admin setup:', e);
@@ -52,5 +54,10 @@ export function getFirebaseAdmin() {
 
 export function getFirestoreAdmin() {
   getFirebaseAdmin();
+  const databaseId = process.env.NEXT_PUBLIC_FIREBASE_DATABASE_ID || configDatabaseId;
+  if (databaseId) {
+    console.log(`Accessing Firestore database instance: "${databaseId}"`);
+    return getFirestore(databaseId);
+  }
   return getFirestore();
 }
