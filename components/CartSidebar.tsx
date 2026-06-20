@@ -63,7 +63,10 @@ export default function CartSidebar({
       }
 
       if (data.authorizationUrl) {
-        window.location.href = data.authorizationUrl;
+        // Open payment in a new tab to avoid Cloudflare/Turnstile verification loops inside the AI Studio iframe preview
+        window.open(data.authorizationUrl, '_blank');
+        setIsLoading(false);
+        onClose();
       } else {
         throw new Error('Transaction authorization URL was not received.');
       }
