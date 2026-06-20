@@ -1,1 +1,204 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  
+  --color-brand-sand: oklch(0.97 0.01 75);
+  --color-brand-sand-dark: oklch(0.94 0.015 75);
+  --color-brand-charcoal: oklch(0.18 0.01 40);
+  --color-brand-charcoal-light: oklch(0.25 0.01 40);
+  --color-brand-green: oklch(0.65 0.15 150);
+  --color-brand-green-dark: oklch(0.55 0.15 150);
+}
+
+/* Custom Scrollbar Utilities */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+/* Base resets & customization */
+body {
+  background-color: var(--color-brand-sand);
+  color: var(--color-brand-charcoal);
+  font-family: var(--font-sans);
+}
+
+/* Sticky Action Sheet for Mobile Bottom */
+.sticky-action-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 20px;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  z-index: 30;
+}
+
+/* Native Modal Dialog and Drawer Animations using @starting-style */
+dialog.native-modal {
+  border: none;
+  border-radius: 24px;
+  padding: 0;
+  max-width: 420px;
+  width: 90%;
+  background: white;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  
+  opacity: 0;
+  scale: 0.95;
+  display: none;
+  
+  transition: 
+    opacity 0.3s ease-out, 
+    scale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    display 0.3s allow-discrete,
+    overlay 0.3s allow-discrete;
+  transition-behavior: allow-discrete;
+}
+
+dialog.native-modal[open] {
+  opacity: 1;
+  scale: 1;
+  display: block;
+}
+
+@starting-style {
+  dialog.native-modal[open] {
+    opacity: 0;
+    scale: 0.95;
+  }
+}
+
+dialog.native-modal::backdrop {
+  background-color: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0px);
+  transition: 
+    background-color 0.3s ease-out,
+    backdrop-filter 0.3s ease-out,
+    display 0.3s allow-discrete,
+    overlay 0.3s allow-discrete;
+  transition-behavior: allow-discrete;
+}
+
+dialog.native-modal[open]::backdrop {
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+}
+
+@starting-style {
+  dialog.native-modal[open]::backdrop {
+    background-color: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+  }
+}
+
+/* Native Drawer (Popover/Dialog-like Drawer) - Always Fixed to Full Screen overlay */
+.native-drawer {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-end: 0;
+  width: 100%;
+  max-width: 450px;
+  height: 100%;
+  border: none;
+  background: #fdfcfa;
+  box-shadow: -10px 0 30px rgba(0,0,0,0.08);
+  margin: 0;
+  z-index: 50;
+  
+  display: none;
+  translate: 100% 0;
+  
+  transition: 
+    translate 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    display 0.4s allow-discrete,
+    overlay 0.4s allow-discrete;
+  transition-behavior: allow-discrete;
+}
+
+.native-drawer[open] {
+  display: flex;
+  flex-direction: column;
+  translate: 0 0;
+}
+
+@starting-style {
+  .native-drawer[open] {
+    translate: 100% 0;
+  }
+}
+
+.native-drawer::backdrop {
+  background-color: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0px);
+  transition: 
+    background-color 0.4s ease-out,
+    backdrop-filter 0.4s ease-out,
+    display 0.4s allow-discrete,
+    overlay 0.4s allow-discrete;
+  transition-behavior: allow-discrete;
+}
+
+.native-drawer[open]::backdrop {
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+}
+
+@starting-style {
+  .native-drawer[open]::backdrop {
+    background-color: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+  }
+}
+
+/* Custom Native Details styling */
+details.modern-details {
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  padding: 16px 0;
+}
+details.modern-details summary {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  user-select: none;
+}
+details.modern-details summary::-webkit-details-marker {
+  display: none;
+}
+details.modern-details .details-content {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #555;
+  overflow: hidden;
+  opacity: 0;
+  max-height: 0;
+  transition: opacity 0.3s ease, max-height 0.3s ease;
+}
+details.modern-details[open] .details-content {
+  opacity: 1;
+  max-height: 500px;
+}
+
+/* Form validation styling */
+input:user-invalid {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+input:user-invalid + .error-msg {
+  display: block;
+}

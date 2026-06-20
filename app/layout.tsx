@@ -1,10 +1,10 @@
-import type {Metadata} from 'next';
-import { Inter, Playfair_Display } from "next/font/google";
+import type {Metadata, Viewport} from 'next';
+import { Outfit, Playfair_Display } from "next/font/google";
 import './globals.css';
 
-const inter = Inter({
+const outfit = Outfit({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-outfit",
 });
 
 const playfair = Playfair_Display({
@@ -13,14 +13,21 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: 'Shoe Product Page - Store',
-  description: 'Product details page with cart sidebar.',
+  title: 'Allbirds - Mens Dasher NZ',
+  description: 'Shop the Mens Dasher NZ. A premium, comfortable running shoe made with natural wool and bio-foam.',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased`} suppressHydrationWarning>{children}</body>
+      <body className={`${outfit.variable} ${playfair.variable} font-sans antialiased bg-brand-sand text-brand-charcoal`} suppressHydrationWarning>{children}</body>
     </html>
   );
 }
